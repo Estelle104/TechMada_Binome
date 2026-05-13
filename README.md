@@ -1,61 +1,87 @@
-# CodeIgniter 4 Framework
+# TechMada RH - Gestion des Conges (CI4)
 
-## What is CodeIgniter?
+Application CodeIgniter 4 pour gerer les demandes de conges avec 3 roles:
+- `employe`
+- `rh` (responsable RH)
+- `admin`
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Mise en place rapide
 
-This repository holds the distributable version of the framework.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+Prerequis:
+- PHP 8.2+
+- Extension `sqlite3` active
+- Composer
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+Commandes d installation:
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+```bash
+composer install
+php spark migrate
+php spark db:seed DatabaseSeeder
+php spark serve
+```
 
-## Important Change with index.php
+L application sera disponible sur `http://localhost:8080`.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+## Comptes de test
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+Apres `php spark db:seed DatabaseSeeder`, les comptes suivants existent:
 
-**Please** read the user guide for a better explanation of how CI4 works!
+- `admin@test.local` / `admin123` (role `admin`)
+- `rh@test.local` / `rh123` (role `rh`)
+- `employe@test.local` / `employe123` (role `employe`)
 
-## Repository Management
+## Workflow DB exige
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Conformement aux consignes:
+- schema gere par migration CI4
+- donnees de test gerees par seeder CI4
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Commande standard:
 
-## Contributing
+```bash
+php spark migrate && php spark db:seed DatabaseSeeder
+```
 
-We welcome contributions from the community.
+## Fonctionnalites par role (consignes)
 
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
+### Employe
+- Connexion / deconnexion
+- Soumettre une demande de conge (type, dates, motif)
+- Consulter ses demandes et leurs statuts
+- Voir son solde restant par type
+- Annuler une demande en attente
+- Modifier son profil
 
-## Server Requirements
+### Responsable RH
+- Voir toutes les demandes en attente
+- Approuver ou refuser une demande (avec commentaire)
+- Mise a jour automatique du solde a l approbation
+- Filtrer les demandes par departement ou statut
+- Voir le solde de chaque employe
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+### Admin
+- CRUD employes
+- CRUD departements
+- CRUD types de conge
+- Tableau de bord des absences
+- Ajuster les soldes annuels
+- Voir l historique complet
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## Structure des donnees
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+Tables principales:
+- `departements`
+- `employes`
+- `types_conge`
+- `soldes`
+- `conges`
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Reference schema: `table.sql`
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## Dossiers utiles
+
+- `app/Database/Migrations` : schema versionne
+- `app/Database/Seeds` : donnees de test
+- `app/Controllers/respRH` : logique Responsable RH
+- `app/Views/respRH` : interface Responsable RH

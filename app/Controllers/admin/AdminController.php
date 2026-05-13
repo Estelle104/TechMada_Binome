@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controllers\employer;
+namespace App\Controllers\admin;
 
 use App\Controllers\BaseController;
 
-class EmployerController extends BaseController
+class AdminController extends BaseController
 {
     public function index()
     {
         $user = session()->get('user');
-        if (!$user || ($user['role'] ?? '') !== 'employe') {
+        if (!$user || ($user['role'] ?? '') !== 'admin') {
             return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
         }
 
-        return view('employer/dashboard');
+        return view('admin/dashboard');
     }
 }

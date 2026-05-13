@@ -74,9 +74,14 @@ class GestionCongeSeeder extends Seeder
         ];
 
         foreach ($employes as $emp) {
-            $exists = $this->db->table('employes')->where('email', $emp['email'])->countAllResults();
-            if ($exists === 0) {
+            $exists = $this->db->table('employes')->where('email', $emp['email'])->get()->getRowArray();
+            $hashed = password_hash($emp['mot_de_passe'], PASSWORD_DEFAULT);
+            if (!$exists) {
+                $emp['mot_de_passe'] = $hashed;
                 $this->db->table('employes')->insert($emp);
+            } else {
+                // ensure password stored is hashed (update test accounts)
+                $this->db->table('employes')->where('email', $emp['email'])->update(['mot_de_passe' => $hashed]);
             }
         }
 
