@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\CongeModel;
 use App\Models\EmployeModel;
 use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\HTTP\RedirectResponse;
 use DateTime;
 
 class EmployerController extends BaseController
@@ -17,12 +18,24 @@ class EmployerController extends BaseController
         $this->db = db_connect();
     }
 
-    public function index()
+    private function ensureEmploye(): ?RedirectResponse
     {
         $user = session()->get('user');
         if (!$user || ($user['role'] ?? '') !== 'employe') {
             return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
         }
+
+        return null;
+    }
+
+    public function index()
+    {
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
+        }
+
+        $user = session()->get('user');
 
         $annee = (int) date('Y');
         $employeId = (int) $user['id'];
@@ -107,10 +120,12 @@ class EmployerController extends BaseController
 
     public function create()
     {
-        $user = session()->get('user');
-        if (!$user || ($user['role'] ?? '') !== 'employe') {
-            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
         }
+
+        $user = session()->get('user');
 
         $annee = (int) date('Y');
         $employeId = (int) $user['id'];
@@ -144,10 +159,12 @@ class EmployerController extends BaseController
 
     public function mesConge()
     {
-        $user = session()->get('user');
-        if (!$user || ($user['role'] ?? '') !== 'employe') {
-            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
         }
+
+        $user = session()->get('user');
 
         $statut = $this->request->getGet('statut') ?? 'all';
         $employeId = (int) $user['id'];
@@ -172,10 +189,12 @@ class EmployerController extends BaseController
 
     public function profil()
     {
-        $user = session()->get('user');
-        if (!$user || ($user['role'] ?? '') !== 'employe') {
-            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
         }
+
+        $user = session()->get('user');
 
         $employeId = (int) $user['id'];
         $employe = $this->db->table('employes e')
@@ -188,6 +207,79 @@ class EmployerController extends BaseController
         return view('employer/profile', [
             'employe' => $employe,
         ]);
+    }
+
+    public function editProfil()
+    {
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
+        }
+
+        $user = session()->get('user');
+        $employeId = (int) $user['id'];
+        $employe = $this->db->table('employes')
+            ->select('id, nom, prenom, email')
+            ->where('id', $employeId)
+            ->get()
+            ->getRowArray();
+
+        return view('employer/profile_edit', [
+            'employe' => $employe,
+        ]);
+    }
+
+    public function updateProfil()
+    {
+        $guard = $this->ensureEmploye();
+        if ($guard) {
+            return $guard;
+        }
+
+        $user = session()->get('user');
+        $employeId = (int) $user['id'];
+
+        $nom = trim((string) $this->request->getPost('nom'));
+        $prenom = trim((string) $this->request->getPost('prenom'));
+        $email = trim((string) $this->request->getPost('email'));
+        $password = (string) $this->request->getPost('mot_de_passe');
+        $passwordConfirm = (string) $this->request->getPost('mot_de_passe_confirm');
+
+        if ($nom === '' || $prenom === '' || $email === '') {
+            return redirect()->back()->withInput()->with('error', 'Nom, prenom et email sont requis.');
+        }
+
+        $emailExists = $this->db->table('employes')
+            ->where('email', $email)
+            ->where('id !=', $employeId)
+            ->countAllResults();
+        if ($emailExists > 0) {
+            return redirect()->back()->withInput()->with('error', 'Cet email est deja utilise.');
+        }
+
+        if ($password !== '' && $password !== $passwordConfirm) {
+            return redirect()->back()->withInput()->with('error', 'Les mots de passe ne correspondent pas.');
+        }
+
+        $data = [
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email,
+        ];
+        if ($password !== '') {
+            $data['mot_de_passe'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $model = new EmployeModel();
+        $model->update($employeId, $data);
+
+        session()->set('user', [
+            'id' => $employeId,
+            'email' => $email,
+            'role' => $user['role'],
+        ]);
+
+        return redirect()->to('/employer/profil')->with('success', 'Profil mis a jour.');
     }
 
     public function profile(int $id)

@@ -14,6 +14,8 @@ $routes->group('employer', ['filter' => 'role:employe'], function($routes) {
 	$routes->get('conges/nouvelle', 'employer\\EmployerController::create');
 	$routes->get('conges/mes', 'employer\\EmployerController::mesConge');
 	$routes->get('profil', 'employer\\EmployerController::profil');
+	$routes->get('profil/modifier', 'employer\\EmployerController::editProfil');
+	$routes->post('profil/modifier', 'employer\\EmployerController::updateProfil');
 	$routes->get('(:num)', 'employer\\EmployerController::profile/$1');
 	$routes->post('conges', 'employer\\EmployerController::demandeConge');
 	$routes->get('conges', 'employer\\EmployerController::listeConge');

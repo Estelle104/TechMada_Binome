@@ -10,12 +10,12 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Configuration sessions CI4
-* [ ] Login
-* [ ] Logout
-* [ ] Middleware / filtre authentification
-* [ ] Restriction par rôle
-* [ ] Gestion mot de passe hashé
+* [ok] Configuration sessions CI4
+* [ok] Login
+* [ok] Logout
+* [ok] Middleware / filtre authentification
+* [ok] Restriction par rôle
+* [ok] Gestion mot de passe hashé
 
 ---
 
@@ -23,10 +23,10 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Affichage profil
-* [ ] Modification profil
-* [ ] Changement mot de passe
-* [ ] Validation formulaires
+* [ok] Affichage profil
+* [ok] Modification profil
+* [ok] Changement mot de passe
+* [ok] Validation formulaires
 
 ---
 
@@ -34,10 +34,10 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Nombre congés restants
-* [ ] Nombre demandes en attente
-* [ ] Dernières demandes
-* [ ] Interface dashboard
+* [ok] Nombre congés restants
+* [ok] Nombre demandes en attente
+* [ok] Dernières demandes
+* [ok] Interface dashboard
 
 ---
 
@@ -45,12 +45,12 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Formulaire création demande
-* [ ] Validation dates
-* [ ] Calcul nombre jours
-* [ ] Vérification chevauchement
-* [ ] Vérification solde suffisant
-* [ ] Enregistrement demande
+* [ok] Formulaire création demande
+* [ok] Validation dates
+* [ok] Calcul nombre jours
+* [ok] Vérification chevauchement
+* [ok] Vérification solde suffisant
+* [ok] Enregistrement demande
 
 ---
 
@@ -58,10 +58,10 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Liste des demandes
-* [ ] Filtrage par statut
-* [ ] Voir détail demande
-* [ ] Affichage commentaires RH
+* [ok] Liste des demandes
+* [ok] Filtrage par statut
+* [ok] Voir détail demande
+* [ok] Affichage commentaires RH
 
 ---
 
@@ -69,9 +69,9 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Annulation demande en attente
-* [ ] Vérification statut
-* [ ] Mise à jour statut
+* [ok] Annulation demande en attente
+* [ok] Vérification statut
+* [ok] Mise à jour statut
 
 ---
 
@@ -79,11 +79,11 @@ Responsable de toute la partie utilisateur/employé.
 
 ## Tâches
 
-* [ ] Layout employé
-* [ ] Navbar
-* [ ] Sidebar
-* [ ] Responsive design
-* [ ] Messages erreurs/succès
+* [ok] Layout employé
+* [ok] Navbar
+* [ok] Sidebar
+* [ok] Responsive design
+* [ok] Messages erreurs/succès
 
 ---
 
@@ -128,11 +128,11 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Création migrations
-* [ ] Relations tables
-* [ ] Seeders
-* [ ] Contraintes SQL
-* [ ] Initialisation SQLite
+* [ok] Création migrations
+* [ok] Relations tables
+* [ok] Seeders
+* [ok] Contraintes SQL
+* [ok] Initialisation SQLite
 
 ---
 
@@ -140,9 +140,9 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] CRUD départements
-* [ ] Validation
-* [ ] Suppression sécurisée
+* [ok] CRUD départements
+* [ok] Validation
+* [ok] Suppression sécurisée
 
 ---
 
@@ -150,9 +150,9 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] CRUD types congés
-* [ ] Gestion jours annuels
-* [ ] Gestion déductible
+* [ok] CRUD types congés
+* [ok] Gestion jours annuels
+* [ok] Gestion déductible
 
 ---
 
@@ -160,11 +160,11 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Ajouter employé
-* [ ] Modifier employé
-* [ ] Désactiver employé
-* [ ] Réinitialiser mot de passe
-* [ ] Attribution rôles
+* [ok] Ajouter employé
+* [ok] Modifier employé
+* [ok] Désactiver employé
+* [ok] Réinitialiser mot de passe
+* [ok] Attribution rôles
 
 ---
 
@@ -172,10 +172,10 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Attribution soldes
-* [ ] Modification soldes
-* [ ] Réinitialisation annuelle
-* [ ] Consultation soldes
+* [ok] Attribution soldes
+* [ok] Modification soldes
+* [ok] Réinitialisation annuelle
+* [ok] Consultation soldes
 
 ---
 
@@ -183,12 +183,12 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Liste toutes demandes
-* [ ] Filtrage
-* [ ] Validation demande
-* [ ] Refus demande
-* [ ] Commentaire RH
-* [ ] Mise à jour soldes après validation
+* [ok] Liste toutes demandes
+* [ok] Filtrage
+* [ok] Validation demande
+* [ok] Refus demande
+* [ok] Commentaire RH
+* [ok] Mise à jour soldes après validation
 
 ---
 
@@ -196,11 +196,11 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Statistiques générales
-* [ ] Nombre employés
-* [ ] Nombre demandes
-* [ ] Congés approuvés/refusés
-* [ ] Interface dashboard
+* [ok] Statistiques générales
+* [ok] Nombre employés
+* [ok] Nombre demandes
+* [ok] Congés approuvés/refusés
+* [ok] Interface dashboard
 
 ---
 
@@ -208,10 +208,10 @@ Responsable de toute la gestion administrative et validation RH.
 
 ## Tâches
 
-* [ ] Layout admin
-* [ ] Tables CRUD
-* [ ] Pagination
-* [ ] Messages succès/erreurs
+* [ok] Layout admin
+* [ok] Tables CRUD
+* [ok] Pagination
+* [ok] Messages succès/erreurs
 
 ---
 

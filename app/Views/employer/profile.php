@@ -37,6 +37,19 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
     </div>
 
     <div class="content">
+      <?php if (session()->getFlashdata('success')): ?>
+        <div class="flash flash-success">
+          <i class="bi bi-check-circle-fill"></i>
+          <?= esc((string) session()->getFlashdata('success')) ?>
+        </div>
+      <?php endif; ?>
+      <?php if (session()->getFlashdata('error')): ?>
+        <div class="flash flash-error">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <?= esc((string) session()->getFlashdata('error')) ?>
+        </div>
+      <?php endif; ?>
+
       <div class="data-card">
         <div class="data-card-head"><h3>Informations personnelles</h3></div>
         <div style="padding:1.25rem">
@@ -51,6 +64,9 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
             <div class="inline-stat"><i class="bi bi-envelope"></i> <strong><?= esc($email) ?></strong></div>
             <div class="inline-stat"><i class="bi bi-person-badge"></i> <strong><?= esc($role) ?></strong></div>
             <div class="inline-stat"><i class="bi bi-calendar-event"></i> <strong><?= esc($dateEmbauche) ?></strong></div>
+          </div>
+          <div style="margin-top:1rem">
+            <a href="/employer/profil/modifier" class="btn-secondary"><i class="bi bi-pencil"></i> Modifier mon profil</a>
           </div>
         </div>
       </div>
