@@ -8,14 +8,13 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Home::login');
 
-$routes->group('', ['filter' => 'role:employe'], function($routes) {
+$routes->group('employer', ['filter' => 'role:employe'], function($routes) {
 
 });
 
-$routes->group('', ['filter' => 'role:rh'], function($routes) {
+$routes->group('rh', ['filter' => 'role:rh'], function($routes) {
     
 });
 
-$routes->group('', ['filter' => 'role:admin'], function($routes) {
-    
+$routes->group('admin', ['filter' => 'role:admin'], function($routes) {
 });
