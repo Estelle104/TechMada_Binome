@@ -11,6 +11,11 @@ class EmployerController extends BaseController
 {
     public function index()
     {
+        $user = session()->get('user');
+        if (!$user || ($user['role'] ?? '') !== 'employe') {
+            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        }
+
         return view('employer/dashboard');
     }
 
