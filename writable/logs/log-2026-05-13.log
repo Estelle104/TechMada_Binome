@@ -54,3 +54,262 @@ in SYSTEMPATH\Router\Router.php on line 523.
  7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
  8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
  9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 08:37:33 --> CodeIgniter\Filters\Exceptions\FilterException: "auth,role" filter must have a matching alias defined.
+[Method: GET, Route: rh]
+in SYSTEMPATH\Filters\Filters.php on line 590.
+ 1 SYSTEMPATH\Filters\Filters.php(590): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('auth,role')
+ 2 SYSTEMPATH\Filters\Filters.php(641): CodeIgniter\Filters\Filters->enableFilter('auth,role:rh', 'before')
+ 3 SYSTEMPATH\CodeIgniter.php(453): CodeIgniter\Filters\Filters->enableFilters([...], 'before')
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 8 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 08:42:27 --> CodeIgniter\Filters\Exceptions\FilterException: "auth,role" filter must have a matching alias defined.
+[Method: GET, Route: rh]
+in SYSTEMPATH\Filters\Filters.php on line 590.
+ 1 SYSTEMPATH\Filters\Filters.php(590): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('auth,role')
+ 2 SYSTEMPATH\Filters\Filters.php(641): CodeIgniter\Filters\Filters->enableFilter('auth,role:rh', 'before')
+ 3 SYSTEMPATH\CodeIgniter.php(453): CodeIgniter\Filters\Filters->enableFilters([...], 'before')
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 7 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 8 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 08:45:28 --> CodeIgniter\Router\Exceptions\RouterException: The namespace delimiter is a backslash (\), not a slash (/). Route handler: "\App\Controllers\employer/EmployerController::index"
+[Method: GET, Route: employer]
+in SYSTEMPATH\Router\Router.php on line 523.
+ 1 SYSTEMPATH\Router\Router.php(523): CodeIgniter\Router\Exceptions\RouterException::forInvalidControllerName('\\App\\Controllers\\employer/EmployerController::index')
+ 2 SYSTEMPATH\Router\Router.php(225): CodeIgniter\Router\Router->checkRoutes('employer')
+ 3 SYSTEMPATH\CodeIgniter.php(829): CodeIgniter\Router\Router->handle('employer')
+ 4 SYSTEMPATH\CodeIgniter.php(441): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+ERROR - 2026-05-13 09:14:37 --> Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 164.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(164): SQLite3->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = :e.id:', [...], false)
+ 5 APPPATH\Controllers\employer\EmployerController.php(34): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:14:37 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: 1, no such table: employes
+[Method: GET, Route: employer]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = :e.id:', [...], false)
+ 2 APPPATH\Controllers\employer\EmployerController.php(34): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->index()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:14:37 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 174.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = :e.id:', [...], false)
+ 4 APPPATH\Controllers\employer\EmployerController.php(34): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->index()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:14:37 --> [Caused by] Exception: Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 164.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(164): SQLite3->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = 2')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT `e`.`nom`, `e`.`prenom`, `e`.`email`, `e`.`role`, `e`.`date_embauche`, `d`.`nom` AS `departement_nom`
+FROM `employes` `e`
+LEFT JOIN `departements` `d` ON `d`.`id` = `e`.`departement_id`
+WHERE `e`.`id` = :e.id:', [...], false)
+ 5 APPPATH\Controllers\employer\EmployerController.php(34): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->index()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+ERROR - 2026-05-13 09:15:57 --> Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 164.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(164): SQLite3->query('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `employes`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 5 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 7 APPPATH\Controllers\Home.php(19): CodeIgniter\BaseModel->first()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->login()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+14 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:15:57 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: 1, no such table: employes
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\BaseConnection.php on line 865.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `employes`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 2 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 4 APPPATH\Controllers\Home.php(19): CodeIgniter\BaseModel->first()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:15:57 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 174.
+ 1 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `employes`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 4 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 6 APPPATH\Controllers\Home.php(19): CodeIgniter\BaseModel->first()
+ 7 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->login()
+ 8 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:15:57 --> [Caused by] Exception: Unable to prepare statement: 1, no such table: employes
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 164.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(164): SQLite3->query('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `employes`
+WHERE `email` = \'rh@test.local\'
+ LIMIT 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `employes`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 5 SYSTEMPATH\Model.php(295): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 7 APPPATH\Controllers\Home.php(19): CodeIgniter\BaseModel->first()
+ 8 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\Home->login()
+ 9 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+14 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:21:26 --> ParseError: syntax error, unexpected token ";"
+[Method: GET, Route: employer/conges/nouvelle]
+in APPPATH\Views\employer\create.php on line 126.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employer/create', [], true)
+ 3 APPPATH\Controllers\employer\EmployerController.php(139): view('employer/create', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->create()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:21:39 --> ParseError: syntax error, unexpected token ";"
+[Method: GET, Route: employer/conges/mes]
+in APPPATH\Views\employer\index.php on line 76.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employer/index', [], true)
+ 3 APPPATH\Controllers\employer\EmployerController.php(167): view('employer/index', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->mesConge()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')
+CRITICAL - 2026-05-13 09:21:41 --> ParseError: syntax error, unexpected token ";"
+[Method: GET, Route: employer/conges/nouvelle]
+in APPPATH\Views\employer\create.php on line 126.
+ 1 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employer/create', [], true)
+ 3 APPPATH\Controllers\employer\EmployerController.php(139): view('employer/create', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\employer\EmployerController->create()
+ 5 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\employer\EmployerController))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')

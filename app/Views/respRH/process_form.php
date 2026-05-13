@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traitement RH</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --danger: #c0392b;
-            --danger-bg: #fdf0ee;
-            --danger-br: #f0b8b2;
-            --success: #1e6b3f;
-            --success-bg: #edf7f2;
-            --success-br: #8fd4aa;
-        }
-        body { background: #f8f6f1; }
-        .box { max-width: 760px; margin: 2rem auto; background: #fff; border: 1px solid #dde8e1; border-radius: 12px; padding: 1.2rem; }
-        .danger { background: var(--danger-bg); border-color: var(--danger-br); }
-        .ok { background: var(--success-bg); border-color: var(--success-br); }
-    </style>
-</head>
+<?= view('partials/template_head', ['title' => 'Traitement RH - TechMada RH']) ?>
 <body>
-    <?php
-    $mode = $mode ?? 'approve';
-    $demande = $demande ?? [];
-    ?>
-    <div class="box <?= $mode === 'reject' ? 'danger' : 'ok' ?>">
-        <h4>
-            <?= $mode === 'reject' ? 'Confirmer le refus' : 'Confirmer l approbation' ?>
-            - <?= esc((string) (($demande['employe_prenom'] ?? '') . ' ' . ($demande['employe_nom'] ?? ''))) ?>
-        </h4>
+<?php
+$mode = $mode ?? 'approve';
+$demande = $demande ?? [];
+$isReject = $mode === 'reject';
+$restants = (int) ($demande['jours_restants'] ?? 0);
+$demandeJours = (int) ($demande['nb_jours'] ?? 0);
+?>
+<div class="app-wrap">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo-icon"><i class="bi bi-person-check"></i></div>
+            <div class="sidebar-brand-name">TechMada RH<span>Espace responsable</span></div>
+        </div>
+        <ul class="sidebar-nav" style="margin-top:1rem">
+            <li><a href="/rh" class="active"><i class="bi bi-inbox"></i> Demandes à traiter</a></li>
+        </ul>
+    </aside>
 
-        <p class="mb-1"><strong>Type:</strong> <?= esc((string) ($demande['type_conge_nom'] ?? '')) ?></p>
-        <p class="mb-1"><strong>Periode:</strong> <?= esc((string) ($demande['date_debut'] ?? '')) ?> -> <?= esc((string) ($demande['date_fin'] ?? '')) ?></p>
-        <p class="mb-1"><strong>Duree:</strong> <?= esc((string) ($demande['nb_jours'] ?? 0)) ?> jour(s)</p>
-        <p class="mb-3"><strong>Solde disponible:</strong> <?= esc((string) ((int) ($demande['jours_restants'] ?? 0))) ?> jour(s)</p>
-
-        <form method="post" action="<?= $mode === 'reject' ? '/rh/reject/' : '/rh/approve/' ?><?= esc((string) ($demande['id'] ?? 0)) ?>">
-            <?= csrf_field() ?>
-            <div class="mb-3">
-                <label class="form-label">Commentaire RH <?= $mode === 'reject' ? '(recommande)' : '(optionnel)' ?></label>
-                <textarea class="form-control" name="commentaire_rh" rows="4" placeholder="Ajoutez un commentaire pour l employe"></textarea>
+    <div class="main">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title"><?= $isReject ? 'Confirmer le refus' : 'Confirmer l approbation' ?></div>
+                <div class="topbar-breadcrumb"><a href="/rh">Demandes</a> <i class="bi bi-chevron-right" style="font-size:.6rem"></i> Traitement</div>
             </div>
+        </div>
 
-            <div class="d-flex gap-2">
-                <?php if ($mode === 'reject'): ?>
-                    <button class="btn btn-danger" type="submit">Confirmer le refus</button>
-                <?php else: ?>
-                    <button class="btn btn-success" type="submit">Confirmer l approbation</button>
-                <?php endif; ?>
-                <a href="/rh" class="btn btn-outline-secondary">Annuler</a>
+        <div class="content">
+            <div class="form-section" style="border-color:<?= $isReject ? 'var(--danger-br)' : 'var(--success-br)' ?>;background:<?= $isReject ? 'var(--danger-bg)' : 'var(--success-bg)' ?>">
+                <h3 style="color:<?= $isReject ? 'var(--danger)' : 'var(--success)' ?>">
+                    <i class="bi <?= $isReject ? 'bi-x-circle' : 'bi-check-circle' ?>"></i>
+                    <?= $isReject ? 'Confirmer le refus' : 'Confirmer l approbation' ?> —
+                    <?= esc((string) (($demande['employe_prenom'] ?? '') . ' ' . ($demande['employe_nom'] ?? ''))) ?>
+                </h3>
+
+                <div style="font-size:.875rem;color:var(--ink);margin-bottom:1rem">
+                    Demande de <strong><?= esc((string) $demandeJours) ?> jours</strong> du <?= esc((string) ($demande['date_debut'] ?? '')) ?> au <?= esc((string) ($demande['date_fin'] ?? '')) ?> · Type : <?= esc((string) ($demande['type_conge_nom'] ?? '')) ?><br>
+                    <span style="font-size:.8rem;color:var(--muted)">Solde disponible : <?= esc((string) $restants) ?> jour(s)</span>
+                </div>
+
+                <form method="post" action="<?= $isReject ? '/rh/reject/' : '/rh/approve/' ?><?= esc((string) ($demande['id'] ?? 0)) ?>">
+                    <?= csrf_field() ?>
+                    <div class="f-group">
+                        <label class="f-label">Commentaire RH <?= $isReject ? '(recommandé)' : '(optionnel)' ?></label>
+                        <textarea class="f-textarea" name="commentaire_rh" placeholder="Ajoutez un commentaire pour l employé"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <?php if ($isReject): ?>
+                            <button class="btn-sm btn-refuse" style="padding:9px 16px;font-size:.875rem" type="submit"><i class="bi bi-x-lg"></i> Confirmer le refus</button>
+                        <?php else: ?>
+                            <button class="btn-sm btn-approve" style="padding:9px 16px;font-size:.875rem" type="submit"><i class="bi bi-check-lg"></i> Confirmer l approbation</button>
+                        <?php endif; ?>
+                        <a href="/rh" class="btn-secondary"><i class="bi bi-arrow-left"></i> Annuler</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
+
+        <div class="footer-app"><i class="bi bi-c-circle"></i> <?= esc((string) date('Y')) ?> <span>TechMada RH</span></div>
     </div>
+</div>
 </body>
 </html>

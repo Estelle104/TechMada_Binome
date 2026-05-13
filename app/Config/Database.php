@@ -52,7 +52,7 @@ class Database extends Config
     // ];
 
     public array $default = [
-        'database'    => WRITEPATH . 'database.sqlite',
+        'database'    => WRITEPATH . 'fitspace.db',
         'DBDriver'    => 'SQLite3',
         'DBPrefix'    => '',
         'DBDebug'     => true,
