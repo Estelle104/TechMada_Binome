@@ -111,5 +111,54 @@ class GestionCongeSeeder extends Seeder
                 }
             }
         }
+
+        $employesMap = [];
+        foreach ($employesDb as $e) {
+            $employesMap[$e['role']] = (int) $e['id'];
+        }
+
+        $conges = [
+            [
+                'employe_id' => $employesMap['employe'] ?? null,
+                'type_conge_id' => $typesMap['Conge annuel']['id'] ?? null,
+                'date_debut' => date('Y') . '-06-03',
+                'date_fin' => date('Y') . '-06-05',
+                'nb_jours' => 3,
+                'motif' => 'Conges personnels',
+                'statut' => 'en_attente',
+                'commentaire_rh' => null,
+                'traite_par' => null,
+                'date_traitement' => null,
+            ],
+            [
+                'employe_id' => $employesMap['employe'] ?? null,
+                'type_conge_id' => $typesMap['Conge maladie']['id'] ?? null,
+                'date_debut' => date('Y') . '-02-12',
+                'date_fin' => date('Y') . '-02-13',
+                'nb_jours' => 2,
+                'motif' => 'Consultation medicale',
+                'statut' => 'approuvee',
+                'commentaire_rh' => 'Justificatif recu',
+                'traite_par' => $employesMap['rh'] ?? null,
+                'date_traitement' => date('Y') . '-02-11 09:30:00',
+            ],
+        ];
+
+        foreach ($conges as $conge) {
+            if (empty($conge['employe_id']) || empty($conge['type_conge_id'])) {
+                continue;
+            }
+
+            $exists = $this->db->table('conges')
+                ->where('employe_id', (int) $conge['employe_id'])
+                ->where('type_conge_id', (int) $conge['type_conge_id'])
+                ->where('date_debut', $conge['date_debut'])
+                ->where('date_fin', $conge['date_fin'])
+                ->countAllResults();
+
+            if ($exists === 0) {
+                $this->db->table('conges')->insert($conge);
+            }
+        }
     }
 }
