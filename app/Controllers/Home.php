@@ -26,7 +26,7 @@ class Home extends BaseController
             'role' => $user['role'],
         ]);
 
-        return redirect()->to('/livre')->with('success', 'Connexion réussie.');
+        return redirect()->to('/employer')->with('success', 'Connexion réussie.');
     }
     
 }
