@@ -9,8 +9,8 @@ $routes->get('/', 'Home::index');
 $routes->post('/login', 'Home::login');
 $routes->get('/logout', 'Home::logout');
 
-$routes->group('employer', ['filter' => 'auth,role:employe'], function($routes) {
-
+$routes->group('employer', ['filter' => 'role:employe'], function($routes) {
+    $routes->get('/', 'employer/EmployerController::index');
 });
 
 $routes->group('rh', ['filter' => 'auth,role:rh'], function($routes) {
