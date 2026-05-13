@@ -1,0 +1,12 @@
+CRITICAL - 2026-05-13 07:59:42 --> CodeIgniter\Router\Exceptions\RouterException: The namespace delimiter is a backslash (\), not a slash (/). Route handler: "\App\Controllers\employer/EmployerController::profile/$1"
+[Method: GET, Route: employer/1]
+in SYSTEMPATH\Router\Router.php on line 523.
+ 1 SYSTEMPATH\Router\Router.php(523): CodeIgniter\Router\Exceptions\RouterException::forInvalidControllerName('\\App\\Controllers\\employer/EmployerController::profile/$1')
+ 2 SYSTEMPATH\Router\Router.php(225): CodeIgniter\Router\Router->checkRoutes('employer/1')
+ 3 SYSTEMPATH\CodeIgniter.php(829): CodeIgniter\Router\Router->handle('employer/1')
+ 4 SYSTEMPATH\CodeIgniter.php(441): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\ANDRY\\Documents\\Fianarana\\ITU\\S4\\Mr_Rojo\\Github\\TechMada_Binome\\public\\index.php')

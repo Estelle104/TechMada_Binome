@@ -8,14 +8,17 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'Home::login');
 
-$routes->group('', ['filter' => 'role:employe'], function($routes) {
-
+$routes->group('employer', ['filter' => 'role:employe'], function($routes) {
+    $routes->get('/', 'employer/EmployerController::index');
+    $routes->get('(:num)', 'employer/EmployerController::profile/$1');
+    $routes->post('conges', 'employer/EmployerController::demandeConge');
+    $routes->get('conges', 'employer/EmployerController::listeConge');
+    $routes->post('conges/annuler/(:num)', 'employer/EmployerController::annulerConge/$1');
 });
 
-$routes->group('', ['filter' => 'role:rh'], function($routes) {
+$routes->group('rh', ['filter' => 'role:rh'], function($routes) {
     
 });
 
-$routes->group('', ['filter' => 'role:admin'], function($routes) {
-    
+$routes->group('admin', ['filter' => 'role:admin'], function($routes) {
 });
