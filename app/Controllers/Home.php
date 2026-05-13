@@ -22,9 +22,21 @@ class Home extends BaseController
             return redirect()->to('/')->with('error', 'Nom d’utilisateur ou mot de passe incorrect.');
         }
 
-        // mot_de_passe stored as hash
-        if (!password_verify($password, $user['mot_de_passe'])) {
-            return redirect()->to('/')->with('error', 'Nom d’utilisateur ou mot de passe incorrect.');
+        $storedPassword = (string) $user['mot_de_passe'];
+        $passwordInfo = password_get_info($storedPassword);
+
+        if ($passwordInfo['algo'] === 0) {
+            if ($password !== $storedPassword) {
+                return redirect()->to('/')->with('error', 'Nom d’utilisateur ou mot de passe incorrect.');
+            }
+
+            $model->update((int) $user['id'], [
+                'mot_de_passe' => password_hash($password, PASSWORD_DEFAULT)
+            ]);
+        } else {
+            if (!password_verify($password, $storedPassword)) {
+                return redirect()->to('/')->with('error', 'Nom d’utilisateur ou mot de passe incorrect.');
+            }
         }
 
         session()->set('user', [

@@ -5,10 +5,18 @@ namespace App\Controllers\employer;
 use App\Controllers\BaseController;
 use App\Models\CongeModel;
 use App\Models\EmployeModel;
+use CodeIgniter\Database\BaseConnection;
 use DateTime;
 
 class EmployerController extends BaseController
 {
+    private BaseConnection $db;
+
+    public function __construct()
+    {
+        $this->db = db_connect();
+    }
+
     public function index()
     {
         $user = session()->get('user');
@@ -16,7 +24,170 @@ class EmployerController extends BaseController
             return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
         }
 
-        return view('employer/dashboard');
+        $annee = (int) date('Y');
+        $employeId = (int) $user['id'];
+
+        $employe = $this->db->table('employes e')
+            ->select('e.nom, e.prenom, e.email, e.role, e.date_embauche, d.nom AS departement_nom')
+            ->join('departements d', 'd.id = e.departement_id', 'left')
+            ->where('e.id', $employeId)
+            ->get()
+            ->getRowArray();
+
+        $statCounts = ['en_attente' => 0, 'approuvee' => 0, 'refusee' => 0, 'annulee' => 0];
+        $rows = $this->db->table('conges')
+            ->select('statut, COUNT(*) as total')
+            ->where('employe_id', $employeId)
+            ->groupBy('statut')
+            ->get()
+            ->getResultArray();
+        foreach ($rows as $row) {
+            $stat = (string) ($row['statut'] ?? '');
+            if ($stat !== '' && array_key_exists($stat, $statCounts)) {
+                $statCounts[$stat] = (int) $row['total'];
+            }
+        }
+
+        $soldes = $this->db->table('soldes s')
+            ->select('s.id, s.type_conge_id, s.jours_attribues, s.jours_pris, t.nom AS type_conge_nom')
+            ->join('types_conge t', 't.id = s.type_conge_id', 'left')
+            ->where('s.employe_id', $employeId)
+            ->where('s.annee', $annee)
+            ->orderBy('t.nom', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $soldesView = [];
+        $annualRestants = 0;
+        $annualAttribues = 0;
+        foreach ($soldes as $s) {
+            $attribues = (int) ($s['jours_attribues'] ?? 0);
+            $pris = (int) ($s['jours_pris'] ?? 0);
+            $restants = max(0, $attribues - $pris);
+            $typeNom = (string) ($s['type_conge_nom'] ?? '');
+            $soldesView[] = [
+                'type_nom' => $typeNom,
+                'attribues' => $attribues,
+                'pris' => $pris,
+                'restants' => $restants,
+            ];
+
+            if (stripos($typeNom, 'annuel') !== false) {
+                $annualRestants = $restants;
+                $annualAttribues = $attribues;
+            }
+        }
+
+        if ($annualAttribues === 0 && !empty($soldesView)) {
+            $annualAttribues = $soldesView[0]['attribues'];
+            $annualRestants = $soldesView[0]['restants'];
+        }
+
+        $recentDemandes = $this->db->table('conges c')
+            ->select('c.id, c.date_debut, c.date_fin, c.nb_jours, c.statut, t.nom AS type_conge_nom')
+            ->join('types_conge t', 't.id = c.type_conge_id', 'left')
+            ->where('c.employe_id', $employeId)
+            ->orderBy('c.date_debut', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
+
+        return view('employer/dashboard', [
+            'annee' => $annee,
+            'employe' => $employe,
+            'counts' => $statCounts,
+            'soldes' => $soldesView,
+            'annual' => [
+                'attribues' => $annualAttribues,
+                'restants' => $annualRestants,
+            ],
+            'recentDemandes' => $recentDemandes,
+        ]);
+    }
+
+    public function create()
+    {
+        $user = session()->get('user');
+        if (!$user || ($user['role'] ?? '') !== 'employe') {
+            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        }
+
+        $annee = (int) date('Y');
+        $employeId = (int) $user['id'];
+
+        $soldes = $this->db->table('soldes s')
+            ->select('s.type_conge_id, s.jours_attribues, s.jours_pris, t.nom AS type_conge_nom')
+            ->join('types_conge t', 't.id = s.type_conge_id', 'left')
+            ->where('s.employe_id', $employeId)
+            ->where('s.annee', $annee)
+            ->orderBy('t.nom', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $types = [];
+        foreach ($soldes as $s) {
+            $attribues = (int) ($s['jours_attribues'] ?? 0);
+            $pris = (int) ($s['jours_pris'] ?? 0);
+            $types[] = [
+                'id' => (int) $s['type_conge_id'],
+                'nom' => (string) ($s['type_conge_nom'] ?? ''),
+                'restants' => max(0, $attribues - $pris),
+                'attribues' => $attribues,
+            ];
+        }
+
+        return view('employer/create', [
+            'annee' => $annee,
+            'types' => $types,
+        ]);
+    }
+
+    public function mesConge()
+    {
+        $user = session()->get('user');
+        if (!$user || ($user['role'] ?? '') !== 'employe') {
+            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        }
+
+        $statut = $this->request->getGet('statut') ?? 'all';
+        $employeId = (int) $user['id'];
+
+        $builder = $this->db->table('conges c')
+            ->select('c.id, c.date_debut, c.date_fin, c.nb_jours, c.statut, c.commentaire_rh, t.nom AS type_conge_nom')
+            ->join('types_conge t', 't.id = c.type_conge_id', 'left')
+            ->where('c.employe_id', $employeId)
+            ->orderBy('c.date_debut', 'DESC');
+
+        if ($statut !== 'all') {
+            $builder->where('c.statut', $statut);
+        }
+
+        $conges = $builder->get()->getResultArray();
+
+        return view('employer/index', [
+            'statut' => $statut,
+            'conges' => $conges,
+        ]);
+    }
+
+    public function profil()
+    {
+        $user = session()->get('user');
+        if (!$user || ($user['role'] ?? '') !== 'employe') {
+            return redirect()->to('/')->with('error', 'Acces refuse : droits insuffisants');
+        }
+
+        $employeId = (int) $user['id'];
+        $employe = $this->db->table('employes e')
+            ->select('e.nom, e.prenom, e.email, e.role, e.date_embauche, e.actif, d.nom AS departement_nom, d.description AS departement_description')
+            ->join('departements d', 'd.id = e.departement_id', 'left')
+            ->where('e.id', $employeId)
+            ->get()
+            ->getRowArray();
+
+        return view('employer/profile', [
+            'employe' => $employe,
+        ]);
     }
 
     public function profile(int $id)
@@ -40,10 +211,16 @@ class EmployerController extends BaseController
     public function demandeConge()
     {
         $user = session()->get('user');
+        $accept = strtolower((string) $this->request->getHeaderLine('Accept'));
+        $wantsJson = $this->request->isAJAX() || str_contains($accept, 'application/json');
         if (!$user) {
-            return $this->response->setStatusCode(401)->setJSON([
-                'message' => 'Non authentifie.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(401)->setJSON([
+                    'message' => 'Non authentifie.'
+                ]);
+            }
+
+            return redirect()->to('/')->with('error', 'Veuillez vous connecter.');
         }
 
         $typeCongeId = (int) $this->request->getPost('type_conge_id');
@@ -52,23 +229,35 @@ class EmployerController extends BaseController
         $motif = $this->request->getPost('motif');
 
         if ($typeCongeId <= 0 || empty($dateDebut) || empty($dateFin)) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'message' => 'type_conge_id, date_debut et date_fin sont requis.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'message' => 'type_conge_id, date_debut et date_fin sont requis.'
+                ]);
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Type, date de debut et date de fin sont requis.');
         }
 
         $start = DateTime::createFromFormat('Y-m-d', $dateDebut);
         $end = DateTime::createFromFormat('Y-m-d', $dateFin);
         if (!$start || !$end || $start->format('Y-m-d') !== $dateDebut || $end->format('Y-m-d') !== $dateFin) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'message' => 'Format de date invalide. Utiliser YYYY-MM-DD.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'message' => 'Format de date invalide. Utiliser YYYY-MM-DD.'
+                ]);
+            }
+
+            return redirect()->back()->withInput()->with('error', 'Format de date invalide. Utiliser YYYY-MM-DD.');
         }
 
         if ($start > $end) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'message' => 'date_debut doit etre avant ou egale a date_fin.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'message' => 'date_debut doit etre avant ou egale a date_fin.'
+                ]);
+            }
+
+            return redirect()->back()->withInput()->with('error', 'La date de debut doit etre avant ou egale a la date de fin.');
         }
 
         $nbJours = (int) $end->diff($start)->format('%a') + 1;
@@ -87,11 +276,15 @@ class EmployerController extends BaseController
             'date_traitement' => null,
         ], true);
 
-        return $this->response->setStatusCode(201)->setJSON([
-            'message' => 'Demande de conge enregistree.',
-            'id' => $congeId,
-            'nb_jours' => $nbJours
-        ]);
+        if ($wantsJson) {
+            return $this->response->setStatusCode(201)->setJSON([
+                'message' => 'Demande de conge enregistree.',
+                'id' => $congeId,
+                'nb_jours' => $nbJours
+            ]);
+        }
+
+        return redirect()->to('/employer/conges/mes')->with('success', 'Demande de conge enregistree.');
     }
 
     public function listeConge()
@@ -117,10 +310,16 @@ class EmployerController extends BaseController
     public function annulerConge(int $id)
     {
         $user = session()->get('user');
+        $accept = strtolower((string) $this->request->getHeaderLine('Accept'));
+        $wantsJson = $this->request->isAJAX() || str_contains($accept, 'application/json');
         if (!$user) {
-            return $this->response->setStatusCode(401)->setJSON([
-                'message' => 'Non authentifie.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(401)->setJSON([
+                    'message' => 'Non authentifie.'
+                ]);
+            }
+
+            return redirect()->to('/')->with('error', 'Veuillez vous connecter.');
         }
 
         $model = new CongeModel();
@@ -129,15 +328,23 @@ class EmployerController extends BaseController
             ->first();
 
         if (!$conge) {
-            return $this->response->setStatusCode(404)->setJSON([
-                'message' => 'Demande introuvable.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(404)->setJSON([
+                    'message' => 'Demande introuvable.'
+                ]);
+            }
+
+            return redirect()->to('/employer/conges/mes')->with('error', 'Demande introuvable.');
         }
 
         if ($conge['statut'] !== 'en_attente') {
-            return $this->response->setStatusCode(400)->setJSON([
-                'message' => 'Seules les demandes en attente peuvent etre annulees.'
-            ]);
+            if ($wantsJson) {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'message' => 'Seules les demandes en attente peuvent etre annulees.'
+                ]);
+            }
+
+            return redirect()->to('/employer/conges/mes')->with('error', 'Seules les demandes en attente peuvent etre annulees.');
         }
 
         $model->update($id, [
@@ -145,8 +352,12 @@ class EmployerController extends BaseController
             'date_traitement' => date('Y-m-d H:i:s')
         ]);
 
-        return $this->response->setJSON([
-            'message' => 'Demande annulee.'
-        ]);
+        if ($wantsJson) {
+            return $this->response->setJSON([
+                'message' => 'Demande annulee.'
+            ]);
+        }
+
+        return redirect()->to('/employer/conges/mes')->with('success', 'Demande annulee.');
     }
 }
