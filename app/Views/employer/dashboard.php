@@ -31,6 +31,8 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
         </a>
       </li>
       <li><a href="/employer/profil"><i class="bi bi-person"></i> Mon profil</a></li>
+      <li><a href="/employer/calendrier"><i class="bi bi-calendar"></i> Calendrier</a></li>
+
     </ul>
     <div class="sidebar-user">
       <div class="s-user-row">
