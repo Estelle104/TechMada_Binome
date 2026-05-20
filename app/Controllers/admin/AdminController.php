@@ -85,6 +85,64 @@ class AdminController extends BaseController
             ->get()
             ->getResultArray();
 
+        $chartYear = (int) date('Y');
+        $yearStart = $chartYear . '-01-01';
+        $yearEnd = $chartYear . '-12-31';
+        $chartLabels = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'];
+        $chartLabelsDays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        $countsByMonth = array_fill(1, 12, 0);
+        $daysByMonth = array_fill(1, 12, 0);
+        $countByDays = array_fill(0, 7, 0);
+
+        $chartRows = $this->db->table('conges c')
+            ->select("strftime('%m', c.date_debut) AS mois", false)
+            ->select('COUNT(*) AS total', false)
+            ->select('SUM(c.nb_jours) AS jours', false)
+            ->where("strftime('%Y', c.date_debut) = '$chartYear'", null, false)
+            ->groupBy('mois')
+            ->get()
+            ->getResultArray();
+
+        foreach ($chartRows as $row) {
+            $month = (int) ($row['mois'] ?? 0);
+            if ($month >= 1 && $month <= 12) {
+                $countsByMonth[$month] = (int) ($row['total'] ?? 0);
+                $daysByMonth[$month] = (int) ($row['jours'] ?? 0);
+            }
+        }
+
+        $congeRows = $this->db->table('conges')
+            ->select('date_debut, date_fin')
+            ->where('date_debut <=', $yearEnd)
+            ->where('date_fin >=', $yearStart)
+            ->get()
+            ->getResultArray();
+
+        foreach ($congeRows as $row) {
+            $rangeStart = (string) ($row['date_debut'] ?? '');
+            $rangeEnd = (string) ($row['date_fin'] ?? '');
+            if ($rangeStart === '' || $rangeEnd === '') {
+                continue;
+            }
+
+            if ($rangeStart < $yearStart) {
+                $rangeStart = $yearStart;
+            }
+            if ($rangeEnd > $yearEnd) {
+                $rangeEnd = $yearEnd;
+            }
+
+            $start = new \DateTime($rangeStart);
+            $end = new \DateTime($rangeEnd);
+            $end->modify('+1 day');
+
+            while ($start < $end) {
+                $weekday = (int) $start->format('w');
+                $countByDays[$weekday]++;
+                $start->modify('+1 day');
+            }
+        }
+
         return view('admin/dashboard', [
             'metrics' => [
                 'employes_actifs' => $employesActifs,
@@ -95,6 +153,14 @@ class AdminController extends BaseController
             ],
             'recentDemandes' => $recentDemandes,
             'absentsList' => $absentsList,
+            'chart' => [
+                'year' => $chartYear,
+                'labels' => $chartLabels,
+                'labelsDays' => $chartLabelsDays,
+                'counts' => array_values($countsByMonth),
+                'jours' => array_values($daysByMonth),
+                'joursParSemaine' => array_values($countByDays),
+            ],
         ]);
     }
 
