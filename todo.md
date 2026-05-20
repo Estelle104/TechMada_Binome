@@ -240,5 +240,10 @@ SoldeModel
 ---
 
 # 20-05-26
-## Vue calendrier
-- 
+## Employe 
+- Calendrier interactive : Estelle
+- Historique et statistiques : Estelle
+
+## Admin
+- Graphique sur le nombre de conge par mois : Andry
+- Graphique sur les jours : Andry
