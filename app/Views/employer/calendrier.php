@@ -12,6 +12,7 @@ $departementNom = (string) ($employe['departement_nom'] ?? '');
 $initials = trim(substr($prenom, 0, 1) . substr($nom, 0, 1));
 $initials = $initials !== '' ? strtoupper($initials) : 'EM';
 ?>
+
 <div class="app-wrap">
   <aside class="sidebar">
     <div class="sidebar-brand">
@@ -54,29 +55,34 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
       </div>
 
       <!-- Dashboard Statistiques -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px;">
-        <div class="stat-card stat-attente">
-          <div class="stat-value"><?= esc((string) $counts['en_attente']) ?></div>
-          <div class="stat-label">En attente</div>
-        </div>
-        <div class="stat-card stat-approuvee">
-          <div class="stat-value"><?= esc((string) $counts['approuvee']) ?></div>
-          <div class="stat-label">Approuvés</div>
-        </div>
-        <div class="stat-card stat-refusee">
-          <div class="stat-value"><?= esc((string) $counts['refusee']) ?></div>
-          <div class="stat-label">Refusés</div>
-        </div>
-        <div class="stat-card stat-annulee">
-          <div class="stat-value"><?= esc((string) $counts['annulee']) ?></div>
-          <div class="stat-label">Annulés</div>
+      <div style="margin-top: 30px;">
+        <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 5px; color: #333;">Historique et statistiques</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Nombre total de demandes de congé, par statut</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+          <div class="stat-card stat-attente">
+            <div class="stat-value"><?= esc((string) $counts['en_attente']) ?></div>
+            <div class="stat-label">En attente</div>
+          </div>
+          <div class="stat-card stat-approuvee">
+            <div class="stat-value"><?= esc((string) $counts['approuvee']) ?></div>
+            <div class="stat-label">Approuvés</div>
+          </div>
+          <div class="stat-card stat-refusee">
+            <div class="stat-value"><?= esc((string) $counts['refusee']) ?></div>
+            <div class="stat-label">Refusés</div>
+          </div>
+          <div class="stat-card stat-annulee">
+            <div class="stat-value"><?= esc((string) $counts['annulee']) ?></div>
+            <div class="stat-label">Annulés</div>
+          </div>
         </div>
       </div>
 
       <!-- Historique -->
-      <div class="data-card" style="margin-top: 25px;">
+      <div class="data-card" style="margin-top: 30px;">
         <div class="data-card-head">
-          <h3>Historique des congés</h3>
+          <h3>Historique détaillé</h3>
         </div>
         <table class="tbl">
           <thead>
@@ -107,6 +113,7 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
         </table>
       </div>
     </div>
+    <div class="footer-app"><i class="bi bi-c-circle"></i> <?= esc((string) date('Y')) ?> <span>TechMada RH</span></div>
   </div>
 </div>
 

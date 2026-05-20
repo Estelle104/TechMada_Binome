@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers\employer;
 
 use App\Controllers\BaseController;
@@ -13,11 +14,13 @@ class Calendrier extends BaseController
 
     public function __construct()
     {
+
         $this->db = db_connect();
     }
 
     public function index()
     {
+
         $user = session()->get('user');
         if (!$user || ($user['role'] ?? '') !== 'employe') {
             return redirect()->to('/')->with('error', 'Acces refuse');
@@ -26,13 +29,11 @@ class Calendrier extends BaseController
         $employeId = (int) $user['id'];
         $model = new CongeModel();
 
-        // Récupérer les données employé
+        // empploye
         $employe = $this->db->table('employes e')
             ->select('e.nom, e.prenom, e.email, e.role, e.date_embauche, d.nom AS departement_nom')
             ->join('departements d', 'd.id = e.departement_id', 'left')
-            ->where('e.id', $employeId)
-            ->get()
-            ->getRowArray();
+            ->where('e.id', $employeId)->get()->getRowArray();
 
         // Statistiques
         $counts = [
@@ -42,18 +43,14 @@ class Calendrier extends BaseController
             'annulee' => $model->where('employe_id', $employeId)->where('statut', 'annulee')->countAllResults(),
         ];
 
-        // Historique (derniers 5 congés)
         $historique = $this->db->table('conges c')
             ->select('c.id, c.date_debut, c.date_fin, c.nb_jours, c.motif, c.statut, c.type_conge_id')
             ->where('c.employe_id', $employeId)
-            ->orderBy('c.date_debut', 'DESC')
-            ->limit(5)
-            ->get()
-            ->getResultArray();
+            ->orderBy('c.date_debut', 'DESC')->get()->getResultArray();
 
-        // Ajouter le type de congé s'il existe
+        // type si misy
         foreach ($historique as &$h) {
-            $h['type_conge_nom'] = 'Congé'; // Valeur par défaut
+            $h['type_conge_nom'] = $this->db->table('types_conge')->select('nom')->where('id', $h['type_conge_id'])->get()->getRow()->nom ?? '—';
         }
 
         return view('employer/calendrier', [
@@ -63,15 +60,16 @@ class Calendrier extends BaseController
         ]);
     }
 
-    public function events() {
+    public function events()
+    {
         $user = session()->get('user');
         $employeId = (int) $user['id'];
-        
+
         $model = new CongeModel();
         $conges = $model->where('employe_id', $employeId)->where('statut', 'approuvee')->findAll();
         $events = [];
 
-        foreach($conges as $c) {
+        foreach ($conges as $c) {
             $debut = $c['date_debut'];
             $fin = $c['date_fin'];
 
@@ -94,5 +92,4 @@ class Calendrier extends BaseController
         }
         return $this->response->setJSON($events);
     }
-
 }
