@@ -20,6 +20,9 @@ $routes->group('employer', ['filter' => 'role:employe'], function($routes) {
 	$routes->post('conges', 'employer\\EmployerController::demandeConge');
 	$routes->get('conges', 'employer\\EmployerController::listeConge');
 	$routes->post('conges/annuler/(:num)', 'employer\\EmployerController::annulerConge/$1');
+	$routes->get('events', 'employer\Calendrier::events');
+	$routes->get('calendrier', 'employer\Calendrier::index');
+
 });
 
 $routes->group('rh', ['filter' => ['auth', 'role:rh']], function($routes) {

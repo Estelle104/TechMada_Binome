@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?= view('partials/template_head', ['title' => 'Administration - TechMada RH']) ?>
+<script src="<?= base_url('chart.js') ?>"></script>
 <body>
 <?php
 $metrics = $metrics ?? [
@@ -12,6 +13,13 @@ $metrics = $metrics ?? [
 ];
 $recentDemandes = $recentDemandes ?? [];
 $absentsList = $absentsList ?? [];
+$chart = $chart ?? [
+  'year' => (int) date('Y'),
+  'labels' => [],
+  'counts' => [],
+  'jours' => [],
+  'joursParSemaine' => []
+];
 ?>
 <div class="app-wrap">
   <aside class="sidebar">
@@ -79,7 +87,7 @@ $absentsList = $absentsList ?? [];
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start">
+    
         <div class="data-card" style="margin:0">
           <div class="data-card-head">
             <h3>Demandes récentes</h3>
@@ -113,6 +121,24 @@ $absentsList = $absentsList ?? [];
           </table>
         </div>
 
+        <br>
+
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start">
+        <div class="data-card" style="margin:0">
+          <div class="data-card-head">
+            <h3>Conges par mois (<?= esc((string) $chart['year']) ?>)</h3>
+          </div>
+          <div style="padding:1rem 1.25rem">
+            <canvas id="congesCountChart" height="140"></canvas>
+          </div>
+          <div class="data-card-head" style="border-top:1px solid var(--border)">
+            <h3>Jours de conge par mois</h3>
+          </div>
+          <div style="padding:1rem 1.25rem">
+            <canvas id="congesDaysChart" height="140"></canvas>
+          </div>
+        </div>
+
         <div style="display:flex;flex-direction:column;gap:1rem">
           <div class="data-card" style="margin:0">
             <div class="data-card-head"><h3><i class="bi bi-person-slash" style="color:var(--muted);margin-right:5px"></i>Absences du mois</h3></div>
@@ -142,5 +168,65 @@ $absentsList = $absentsList ?? [];
     <div class="footer-app"><i class="bi bi-c-circle"></i> <?= esc((string) date('Y')) ?> <span>TechMada RH</span></div>
   </div>
 </div>
+<script>
+  const chartLabels = <?= json_encode($chart['labels']) ?>;
+  const chartLabelsDays = <?= json_encode($chart['labelsDays']) ?>;
+  const chartCounts = <?= json_encode($chart['counts']) ?>;
+  const chartJours = <?= json_encode($chart['jours']) ?>;
+  const chartJoursParSemaine = <?= json_encode($chart['joursParSemaine']) ?>;
+
+  const countCtx = document.getElementById('congesCountChart');
+  new Chart(countCtx, {
+    type: 'bar',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Nombre de conges',
+        data: chartCounts,
+        backgroundColor: [
+                    '#3498db',
+                    '#2ecc71',
+                    '#f39c12',
+                    '#9b59b6',
+                    '#e74c3c',
+                    '#1abc9c'
+                ],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+
+  const daysCtx = document.getElementById('congesDaysChart');
+  new Chart(daysCtx, {
+    type: 'bar',
+    data: {
+      labels: chartLabelsDays,
+      datasets: [{
+        label: 'Jours de conge',
+        data: chartJoursParSemaine,
+        borderColor: '#b8750a',
+        backgroundColor: [
+                    '#3498db',
+                    '#2ecc71',
+                    '#f39c12',
+                    '#9b59b6',
+                    '#e74c3c',
+                    '#1abc9c'
+                ],
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+</script>
 </body>
 </html>
