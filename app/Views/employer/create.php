@@ -33,6 +33,8 @@ if ($dateDebut !== '' && $dateFin !== '') {
       <li><a href="/employer/conges/nouvelle" class="active"><i class="bi bi-plus-circle"></i> Nouvelle demande</a></li>
       <li><a href="/employer/conges/mes"><i class="bi bi-calendar3"></i> Mes demandes</a></li>
       <li><a href="/employer/profil"><i class="bi bi-person"></i> Mon profil</a></li>
+      <li><a href="/employer/calendrier"><i class="bi bi-calendar"></i> Calendrier</a></li>
+
     </ul>
   </aside>
 

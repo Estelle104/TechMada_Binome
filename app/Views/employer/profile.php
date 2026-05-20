@@ -25,6 +25,8 @@ $initials = $initials !== '' ? strtoupper($initials) : 'EM';
       <li><a href="/employer/conges/nouvelle"><i class="bi bi-plus-circle"></i> Nouvelle demande</a></li>
       <li><a href="/employer/conges/mes"><i class="bi bi-calendar3"></i> Mes demandes</a></li>
       <li><a href="/employer/profil" class="active"><i class="bi bi-person"></i> Mon profil</a></li>
+      <li><a href="/employer/calendrier"><i class="bi bi-calendar"></i> Calendrier</a></li>
+
     </ul>
   </aside>
 
